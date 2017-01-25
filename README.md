@@ -9,10 +9,10 @@ Dollyzoom is a React component designed to easily produce a commonly used videog
   * CSS Rich
 
 ### Learn more
-See the demo at [http://www.uismithing.com/main/parallax](http://www.uismithing.com/main/parallax).
+See the demo at [http://www.uismithing.com/main/dollyzoom](http://www.uismithing.com/main/dollyzoom).
 
 ### Repository
-[https://github.com/uismithing/react-parallax-effect](https://github.com/uismithing/react-dollyzoom-effect)
+[https://github.com/uismithing/react-dollyzoom-effect](https://github.com/uismithing/react-dollyzoom-effect)
 
 ### Install
 `npm install react-dollyzoom-effect -s`
