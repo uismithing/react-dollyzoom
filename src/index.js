@@ -231,12 +231,10 @@ export default class Dollyzoom extends Component
 		//
 		let dollyzoomchildrenStyle =
 			{
-				"display":"block",
-				"position":"absolute",
-				"visibility":"hidden",
-				"width":"0px",
-				"height":"0px"
+				"display":"none",
+				"position":"absolute"
 			}
+		//
 		let portalmorphProfile
 			= _.has(this, "state.Portal.Profile")
 			? this.state.Portal.Profile
