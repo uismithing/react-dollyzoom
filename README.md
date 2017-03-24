@@ -7,7 +7,7 @@ Dollyzoom is a React component designed to easily produce a commonly used videog
   * Methods for Apply and Restore
 
 ### Learn more
-See the demo at [http://www.uismithing.com/main/dollyzoom](http://www.uismithing.com/main/dollyzoom).
+See the demo at [http://www.uismithing.com/main/wares/dollyzoom](http://www.uismithing.com/main/wares/dollyzoom).
 
 ### Repository
 [https://github.com/uismithing/react-dollyzoom-effect](https://github.com/uismithing/react-dollyzoom-effect)
