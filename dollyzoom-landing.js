@@ -7,12 +7,13 @@ import Formfields from "react-form-fields";
 import $ from "jquery";
 import Dollyzoom from "react-dollyzoom-effect";
 //
-import {fetchDollyzoomHtml} from "../actions/actions";
-import {fetchDollyzoomPropsexampleJs} from "../actions/actions";
-import {fetchDollyzoomMethodsexampleJs} from "../actions/actions";
-import {fetchDollyzoomPropsDemoexampleJson} from "../actions/actions";
-import {fetchDollyzoomCssDemoexampleCss} from "../actions/actions";
-import {fetchDollyzoomDeployexampleHtml} from "../actions/actions";
+import {fetchDollyzoomHtml} from "../actions/actions_dollyzoom-landing";
+import {fetchDollyzoomPropsexampleJs} from "../actions/actions_dollyzoom-landing";
+import {fetchDollyzoomMethodsexampleJs} from "../actions/actions_dollyzoom-landing";
+import {fetchDollyzoomPropsDemoexampleJson} from "../actions/actions_dollyzoom-landing";
+import {fetchDollyzoomCssDemoexampleCss} from "../actions/actions_dollyzoom-landing";
+import {fetchDollyzoomDeployexampleHtml} from "../actions/actions_dollyzoom-landing";
+//
 import BackgroundCanvas from "../components/background-canvas";
 import {updateState} from "../toolbox/toolbox";
 import ReactGA from "react-ga";
@@ -26,10 +27,6 @@ class DollyzoomLanding extends Component
 	constructor(props)
 	{
 	    super(props);
-	}
-	getChildContext()
-	{
-		// empty
 	}
 	getInitialState()
 	{
@@ -56,12 +53,6 @@ class DollyzoomLanding extends Component
 			= this.refs.reactdollyzoom;
 		let formfieldHostleftRef
 			= this.refs.formfillhostleft;
-		let setViewLoaded
-			= this.context.setViewLoaded;
-		let setLayoutMode
-			= this.context.setLayoutMode;
-		let updateNavigationState
-			= this.context.updateNavigationState;
 		let navigationSection
 			= 0;
 		//
@@ -111,23 +102,23 @@ class DollyzoomLanding extends Component
 		});
 		window.requestAnimationFrame(()=>
 		{
-			// Updating the section index this way lets the
-			// state of the nagigation cluster fully initialize
-			// before the activeKey value is updated. This is
-			// necessary for it to be possible to navigate
-			// back to the wares section from within a component
-			// landing page when the component landing page is
-			// directly accessed via the url bar in the browser.
-			updateNavigationState(navigationSection);
+			let updateNavigationState
+				= scopeProxy.props.updateNavigationstateAction;
+			let setViewLoaded
+				= scopeProxy.props.setViewLoadedAction;
+			let setLayoutMode
+				= scopeProxy.props.setLayoutModeAction;
+			//
+			let setviewTimeout =
+				setTimeout(function()
+				{
+					setViewLoaded(true);
+					setLayoutMode("full");
+					updateNavigationState(navigationSection);
+				},
+				500);
+			//
 		});
-		let setviewTimeout =
-			setTimeout(function()
-			{
-				setViewLoaded(true);
-				setLayoutMode("full");
-			},
-			500);
-		//
 	}
 	componentWillUpdate()
 	{
@@ -135,10 +126,7 @@ class DollyzoomLanding extends Component
 	}
 	componentDidUpdate()
 	{
-		window.requestAnimationFrame(function()
-		{
-			// empty
-		});
+		// empty
 	}
 	render()
 	{
@@ -791,34 +779,38 @@ class DollyzoomLanding extends Component
 	//
 	static contextTypes =
 		{
-			"transitionBody":PropTypes.func,
-			"updateNavigationState":PropTypes.func,
-			"setViewLoaded":PropTypes.func,
-			"setLayoutMode":PropTypes.func
+			// empty
 		}
 	//
 }
-function mapAxiosstateToReactprops(axiosState)
+// Map Redux state items to this.props properties
+// each time the Redux state changes. When that
+// happens, the render() function is called
+// and the DOM is updated according to any
+// changes that happened in this.props. Use this
+// to retrieve values from the Redux state and
+// place them in this.props.
+function mapReduxstateToProps(reduxState)
 {
-	// This function is only called when the axios
-	// response updates the application state. Once
-	// this function is called, the component state
-	// is updated which causes the render() function
-	// to execute.
 	return(
 	{
-		// When the application state (state.posts.all) is
-		// updated by the axios promise, the promise response
-		// is assigned the component state this.content.posts.
-		"html":axiosState.content.html,
-		"dollyzoomPropsexampleJs":axiosState.content.dollyzoomPropsexampleJs,
-		"dollyzoomMethodsexampleJs":axiosState.content.dollyzoomMethodsexampleJs,
-		"dollyzoomPropsDemoexampleJson":axiosState.content.dollyzoomPropsDemoexampleJson,
-		"dollyzoomCssDemoexampleCss":axiosState.content.dollyzoomCssDemoexampleCss,
-		"dollyzoomDeployexampleHtml":axiosState.content.dollyzoomDeployexampleHtml
+		"html":reduxState.dollyzoomReducer.html,
+		"dollyzoomPropsexampleJs":reduxState.dollyzoomReducer.dollyzoomPropsexampleJs,
+		"dollyzoomMethodsexampleJs":reduxState.dollyzoomReducer.dollyzoomMethodsexampleJs,
+		"dollyzoomPropsDemoexampleJson":reduxState.dollyzoomReducer.dollyzoomPropsDemoexampleJson,
+		"dollyzoomCssDemoexampleCss":reduxState.dollyzoomReducer.dollyzoomCssDemoexampleCss,
+		"dollyzoomDeployexampleHtml":reduxState.dollyzoomReducer.dollyzoomDeployexampleHtml,
+		"setViewLoadedAction":reduxState.mainReducer.setViewloadedAction,
+		"setLayoutModeAction":reduxState.mainReducer.setLayoutmodeAction,
+		"updateNavigationstateAction":reduxState.navigationReducer.updateNavigationstateAction
 	});
 }
-export default connect(mapAxiosstateToReactprops,
+// Map Redux action-creators to this.props properties
+// when the component is initialized. This gives access
+// to each action-creator to the component from within
+// this.props so that actions can be dispatched. Use
+// this to initially establish values in the Redux state.
+export default connect(mapReduxstateToProps,
 {
 	"fetchDollyzoomHtml":fetchDollyzoomHtml,
 	"fetchDollyzoomPropsexampleJs":fetchDollyzoomPropsexampleJs,
